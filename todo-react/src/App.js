@@ -84,7 +84,11 @@ class App extends Component {
     let arr = [];
     for(let i=0; i<this.state.todos.length; i++) {
       this.state.todos[i].completed = val;
-      arr.push(this.state.todos[i])
+      arr.push({
+        id: this.state.todos[i].id,
+        title: this.state.todos[i].title,
+        completed: val
+      })
     }
     this.setState({
       todos: arr

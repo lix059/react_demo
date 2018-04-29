@@ -6,8 +6,12 @@ const ENTER_KEY = 13;
 export default class TodoItem extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     console.log('item shouldComponentUpdate');
-    console.log(nextProps ===this.props);
-    console.log(nextProps.todo ===this.props.todo);
+    console.log((
+      nextProps.todo !== this.props.todo ||
+      nextProps.todo.editing !== this.props.todo.editing ||
+      nextProps.todo.completed !== this.props.todo.completed ||
+      nextProps.todo.title !== this.props.todo.title
+    ));
     return (
       nextProps.todo !== this.props.todo ||
       nextProps.todo.editing !== this.props.todo.editing ||

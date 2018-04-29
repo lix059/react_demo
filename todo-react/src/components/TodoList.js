@@ -23,9 +23,8 @@ export default class TodoList extends Component {
           <input
             className="toggle-all"
             type="checkbox"
-            onChange={this.props.toggleAll}
-            checked={this.props.activeTodoCount === 0}
           />
+          <label onClick={this.props.toggleAll}></label>
           <ul className="todo-list">
             {todoItems}
           </ul>
