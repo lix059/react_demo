@@ -61,11 +61,16 @@ class App extends Component {
         arr.push(this.state.todos[i])
       } else {
         todo.title = title;
-        arr.push(todo);
+        arr.push({
+          id: todo.id,
+          title: title,
+          completed: todo.completed
+        });
       }
     }
     this.setState({
-      todos: arr
+      todos: arr,
+      editing: null
     })
   }
   cancel() {
@@ -134,6 +139,7 @@ class App extends Component {
             cancel = {this.cancel.bind(this)}
             toggleAll = {this.toggleAll.bind(this)}
             activeTodoCount = {activeTodoCount}
+            editing = {this.state.editing}
         />
         <Footer count={activeTodoCount}
             completedCount={completedCount}

@@ -4,27 +4,40 @@ const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
 
 export default class TodoItem extends Component {
+  constructor() {
+    super();
+    this.state = {
+      title: ''
+    }
+  }
+ componentWillReceiveProps(nextProps) {
+  console.log('componentWillReceiveProps', nextProps);
+    if(nextProps.todo.title !== this.state.title) {
+      this.setState({
+        title: nextProps.todo.title
+      });
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('item shouldComponentUpdate');
-    console.log((
-      nextProps.todo !== this.props.todo ||
-      nextProps.todo.editing !== this.props.todo.editing ||
-      nextProps.todo.completed !== this.props.todo.completed ||
-      nextProps.todo.title !== this.props.todo.title
-    ));
     return (
       nextProps.todo !== this.props.todo ||
-      nextProps.todo.editing !== this.props.todo.editing ||
+      nextProps.editing !== this.props.editing ||
       nextProps.todo.completed !== this.props.todo.completed ||
-      nextProps.todo.title !== this.props.todo.title
+      nextProps.todo.title !== this.props.todo.title ||
+      nextState.title !== this.state.title
     );
   } 
   handleSubmit(e) {
     let value = e.target.value;
-    this.props.onSave(this.props.todo, value);
+    let todo = this.props.todo;
+    this.props.onSave(todo, value);
   }
   onChange(e) {
     console.log(e.target.value)
+    this.setState({
+      title: e.target.value
+    });
   }
 
   handleKeyDown(event) {
@@ -37,7 +50,7 @@ export default class TodoItem extends Component {
   }
 
   render() {
-    const styles = (this.props.todo.completed ? 'completed ' : '') + (this.props.todo.editing ? 'editing' : '');
+    const styles = (this.props.todo.completed ? 'completed ' : '') + (this.props.editing ? 'editing' : '');
     console.log(styles)
     return (
       <li className={styles}>
@@ -56,10 +69,10 @@ export default class TodoItem extends Component {
           <input
             ref="editField"
             className="edit"
-            value={this.props.todo.title}
-            onChange={this.onChange}
-            onBlur={this.handleSubmit}
-            onKeyDown={this.handleKeyDown}
+            value={this.state.title}
+            onChange={this.onChange.bind(this)}
+            onBlur={this.handleSubmit.bind(this)}
+            onKeyDown={this.handleKeyDown.bind(this)}
           />
       </li>
     )
