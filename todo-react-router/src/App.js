@@ -10,7 +10,6 @@ class App extends Component {
     super();
     this.state = {
       todos: [],
-      nowShowing: 'ALL_TODOS',
       editing: null
     }
   }
@@ -98,11 +97,6 @@ class App extends Component {
       todos: arr
     })
   }
-  selectShow(val) {
-    this.setState({
-      nowShowing: val
-    })
-  }
   onClearCompleted() {
     const newTodos = this.state.todos.filter(item => item.completed === false);
     this.setState({
@@ -112,10 +106,10 @@ class App extends Component {
 
   render() {
     const shownTodos = this.state.todos.filter(function (todo) {
-      switch (this.state.nowShowing) {
-        case 'ACTIVE_TODOS':
+      switch (this.props.location.pathname) {
+        case '/active':
           return !todo.completed;
-        case 'COMPLETED_TODOS':
+        case '/complete':
           return todo.completed;
         default:
           return true;
@@ -127,27 +121,26 @@ class App extends Component {
 
     const completedCount = this.state.todos.length - activeTodoCount;
     return (
-      <section className="todoapp">
-      <div>
-        <TodoInput addTodo={this.addTodo.bind(this)}/>
-        <TodoList shownTodos={shownTodos}
-            toggle = {this.toggle.bind(this)}
-            destroy = {this.destroy.bind(this)}
-            edit = {this.edit.bind(this)}
-            save = {this.save.bind(this)}
-            cancel = {this.cancel.bind(this)}
-            toggleAll = {this.toggleAll.bind(this)}
-            activeTodoCount = {activeTodoCount}
-            editing = {this.state.editing}
-        />
-        <Footer count={activeTodoCount}
-            completedCount={completedCount}
-            onClearCompleted={this.onClearCompleted.bind(this)}
-            nowShowing={this.state.nowShowing}
-            selectShow={this.selectShow.bind(this)}
-        />
-      </div>
-      </section>
+        <section className="todoapp">
+          <div>
+            <TodoInput addTodo={this.addTodo.bind(this)}/>
+            <TodoList shownTodos={shownTodos}
+                toggle = {this.toggle.bind(this)}
+                destroy = {this.destroy.bind(this)}
+                edit = {this.edit.bind(this)}
+                save = {this.save.bind(this)}
+                cancel = {this.cancel.bind(this)}
+                toggleAll = {this.toggleAll.bind(this)}
+                activeTodoCount = {activeTodoCount}
+                editing = {this.state.editing}
+            />
+            <Footer count={activeTodoCount}
+                completedCount={completedCount}
+                onClearCompleted={this.onClearCompleted.bind(this)}
+                nowShowing={this.props.location.pathname}
+            />
+          </div>
+        </section>
     );
   }
 }
